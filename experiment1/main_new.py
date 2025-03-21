@@ -131,6 +131,12 @@ def main(
     train_set, valid_set, _, nb_class = load_dataset(
         dataset_path, dataset_name, image_size, return_dataloader=False
     )
+
+    #test:
+    print(f"Train dataset: {train_set if train_set else 'None'}")
+    print(f"Valid dataset: {valid_set if valid_set else 'None'}")
+    print(f"Number of classes: {nb_class}")
+
     if nonIID:
         if dirichlet:
             all_class_weights = dirichlet_split(args.size, nb_class, alpha)
@@ -142,9 +148,13 @@ def main(
         all_class_weights = create_IID_preference(args.size, nb_class)
     train_dataloaders = create_dataloaders(
         train_set, args.size, args.node_datasize, args.batch_size, all_class_weights, nb_class)
-
+    #Test:
+    print(f"Train DataLoaders: {train_dataloaders if train_dataloaders else 'None'}")
     valid_dataloaders = create_dataloaders(valid_set, args.size, args.node_datasize
                                            , args.batch_size, all_class_weights, nb_class )
+    
+    #Test:
+    print(f"Valid DataLoaders: {valid_dataloaders if valid_dataloaders else 'None'}")
     worker_list = []
     trainloader_length_list = []
     
