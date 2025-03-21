@@ -58,6 +58,15 @@ class Worker_Vision:
             loss = criterion(output, self.target)
             self.optimizer.zero_grad()
             loss.backward()
+
+            #print test
+            print(" Gradients after backward (choose_batch):")
+            for name, param in self.model.named_parameters():
+                if param.grad is not None:
+                    print(f"→ {name}: grad mean={param.grad.mean():.6f}, std={param.grad.std():.6f}")
+                else:
+                    print(f"→ {name}: No gradient!")
+
             self.current_lr = self.scheduler.get_last_lr()[0]
             params1 = list(self.model.parameters())
             self.grads_after_choosebatch = [p.grad for p in params1 if p.grad is not None] 
@@ -78,7 +87,15 @@ class Worker_Vision:
             loss = criterion(output, self.target)
             self.optimizer.zero_grad()
             loss.backward()
-    
+
+            #print test
+            print(" Gradients after backward (normal step):")
+            for name, param in self.model.named_parameters():
+                if param.grad is not None:
+                    print(f"→ {name}: grad mean={param.grad.mean():.6f}, std={param.grad.std():.6f}")
+                else:
+                    print(f"→ {name}: No gradient!")
+
     def eval(self, valid_loader, loss_mode):
         # loss mode 为 0 ，计算 z' theta t + 1/2 
         # loss mode 为 1 , 计算 z' theta t ，计算梯度
